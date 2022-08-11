@@ -15,6 +15,14 @@
 				</navigator>
 			</swiper-item>
 		</swiper>
+		
+		<!-- 导航 -->
+		<view class="nav-list">
+			<view class="nav-item" v-for="(item, i) in navList" :key="i" @click="navClickHandler(item)">
+				<image :src="item.image_src" class="nav-img"></image>
+			</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -23,12 +31,17 @@
 		data() {
 			return {
 				// 存储获取的轮播图数据
-				swiperList: []
+				swiperList: [],
+				// 存储分类导航数据
+				navList: []
 			};
 		},
 		onLoad() {
 			// 调用方法，获取轮播图数据
-			this.getSwiperList()
+			this.getSwiperList();
+			
+			// 调用方法，获取nav数据
+			this.getNavList();
 		},
 		methods: {
 			async getSwiperList() {
@@ -44,12 +57,29 @@
 				  //       duration: 1500,
 				  //       icon: 'none',
 				  //   })
-				  return uni.$showMsg()
+				  return uni.$showMsg();
 				}
 				
 				// 请求成功，为 data 中的 swiperList 赋值
-				console.log(res)
+				console.log("轮播图 图片数据：", res);
 				this.swiperList = res.message;
+			},
+			
+			async getNavList() {
+				const { data: res } = await uni.$http.get("/api/public/v1/home/catitems")
+				if(res.meta.status !== 200) return uni.$showMsg();
+				
+				console.log("nav数据：", res);
+				this.navList = res.message;
+			},
+			
+			// 监听事件,点击第一个图标跳转到 cate 页面
+			navClickHandler(item) {
+				if(item.name === "分类") {
+					uni.switchTab({
+						url: "/pages/cate/cate"
+					})
+				}
 			}
 		}
 		
@@ -63,6 +93,17 @@
 		.swiper-item,image {
 			width: 100%;
 			height: 100%;
+		}
+	}
+	
+	.nav-list {
+		display: flex;
+		justify-content: space-around;
+		margin: 15px 0;
+		
+		.nav-img {
+			width: 128rpx;
+			height: 128rpx;
 		}
 	}
 </style>
