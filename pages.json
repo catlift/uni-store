@@ -1,42 +1,48 @@
 {
 	// 页面注册和基本配置
-	"pages": [
-		{
-            "path" : "pages/home/home",
-            "style" :                                                                                    
-            {
-                // "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/cate/cate",
-            "style" :                                                                                    
-            {
-                // "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        },{
-            "path" : "pages/cart/cart",
-            "style" :                                                                                    
-            {
-                // "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/my",
-            "style" :                                                                                    
-            {
-                // "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	"pages": [{
+		"path": "pages/home/home",
+		"style": {
+			// "navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/cate/cate",
+		"style": {
+			// "navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/cart/cart",
+		"style": {
+			// "navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my",
+		"style": {
+			// "navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
+	}],
+	"subPackages": [{
+		"root": "subpackages", // 分包根目录
+		"pages": [
+			// 存放页面路径
+			{
+				"path": "goods_detail/goods_detail",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+
+			}
+		]
+	}],
 	// 全局配置
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
@@ -50,8 +56,7 @@
 	"tabBar": {
 		"color": "#efefef",
 		"selectedColor": "#d81e06",
-		"list": [
-			{
+		"list": [{
 				"pagePath": "pages/home/home",
 				"text": "home",
 				"iconPath": "static/tabbar/home.png",
@@ -76,6 +81,6 @@
 				"selectedIconPath": "static/tabbar/my-active.png"
 			}
 		]
-		
+
 	}
 }
