@@ -1,0 +1,7 @@
+# git 忽略文件
+
+# 因为node_modules是安装插件包，是没有必要进行管理的,（如果进行管理，那么再安装新的包时候会增加成千上百条修改记录）
+/node_modules
+
+# 在git管理中，unpackeage的dist我们是不想跟踪的，但是unpackage我们是要跟踪的，此时unpackage只有一个dist文件，dist文件被忽略那么unpackage也会被忽略，所以我们要在unpackage中放一个占位的文件.gitkeep(没有任何作用，只做占位，让unpackage被git跟踪）
+/unpackage/dist
