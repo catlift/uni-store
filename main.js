@@ -27,6 +27,15 @@ $http.afterRequest = function () {
 	uni.hideLoading()
 }
 
+// 数据请求失败后，经常需要调用 uni.showToast({}) 方法，不妨在 main.js 中封装一个方法出来
+uni.showMsg = function () {
+	uni.showToast({
+		title: '数据请求失败！',
+		duration: 1500,
+		icon: 'none'
+	}) 
+}
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'

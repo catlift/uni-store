@@ -38,11 +38,13 @@
 				
 				// 请求失败,弹出错误提示
 				if (res.meta.status !== 200) {
-				    return uni.showToast({
-						title: '数据请求失败！',
-				        duration: 1500,
-				        icon: 'none',
-				    })
+					// 数据请求失败后，经常需要调用 uni.showToast({}) 方法，不妨在 main.js 中封装一个方法出来
+				  //   return uni.showToast({
+						// title: '数据请求失败！',
+				  //       duration: 1500,
+				  //       icon: 'none',
+				  //   })
+				  return uni.$showMsg()
 				}
 				
 				// 请求成功，为 data 中的 swiperList 赋值
