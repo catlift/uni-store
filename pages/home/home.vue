@@ -23,6 +23,30 @@
 			</view>
 		</view>
 		
+		<!-- floor -->
+		<view class="floor-list">
+			<!-- floor item -->
+			<view class="floor-item" v-for="(item, i) in floorList" :key="i">
+				<!-- floor_title -->
+				<image :src="item.floor_title.image_src" class="floor-title"></image>
+				
+				<!-- floor-img-box -->
+				<view class="floor-img-box">
+					<!-- left-box -->
+					<view class="left-img-box">
+						<image :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}" mode="widthFix"></image>
+					</view>
+					<!-- right-boxs -->
+					<view class="right-img-box">
+						<view class="right-img-item" v-for="(item2, i2) in item.product_list" :key="i2" v-if="i2 !== 0">
+							<image :src="item2.image_src" :style="{width: item2.image_width + 'rpx'}" mode="widthFix"></image>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		
 	</view>
 </template>
 
@@ -33,7 +57,9 @@
 				// 存储获取的轮播图数据
 				swiperList: [],
 				// 存储分类导航数据
-				navList: []
+				navList: [],
+				// 存储楼层数据（商品图片）
+				floorList: []
 			};
 		},
 		onLoad() {
@@ -42,8 +68,12 @@
 			
 			// 调用方法，获取nav数据
 			this.getNavList();
+			
+			// 调用方法，获取floor数据
+			this.getFloorList();
 		},
 		methods: {
+			// 建立请求，获取轮播图数据
 			async getSwiperList() {
 				// '/' 根目录既为 main.js 配置的 basUrl
 				// 发起请求
@@ -64,7 +94,7 @@
 				console.log("轮播图 图片数据：", res);
 				this.swiperList = res.message;
 			},
-			
+			// 建立请求，获取导航数据
 			async getNavList() {
 				const { data: res } = await uni.$http.get("/api/public/v1/home/catitems")
 				if(res.meta.status !== 200) return uni.$showMsg();
@@ -72,7 +102,6 @@
 				console.log("nav数据：", res);
 				this.navList = res.message;
 			},
-			
 			// 监听事件,点击第一个图标跳转到 cate 页面
 			navClickHandler(item) {
 				if(item.name === "分类") {
@@ -80,6 +109,14 @@
 						url: "/pages/cate/cate"
 					})
 				}
+			},
+			// 建立请求，获取楼层(商品)数据
+			async getFloorList() {
+				const { data: res } = await uni.$http.get("/api/public/v1/home/floordata");
+				if(res.meta.status !== 200) return uni.$showMsg();
+				
+				console.log("floor数据：", res)
+				this.floorList = res.message;
 			}
 		}
 		
@@ -104,6 +141,25 @@
 		.nav-img {
 			width: 128rpx;
 			height: 128rpx;
+		}
+	}
+	
+	.floor-list {
+		.floor-title {
+			display: flex;
+			height: 60rpx;
+			width: 100%;
+		}
+		
+		.floor-img-box {
+			display: flex;
+			padding-left: 10rpx;
+			
+			.right-img-box {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-around;
+			}
 		}
 	}
 </style>
