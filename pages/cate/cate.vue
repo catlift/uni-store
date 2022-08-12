@@ -19,7 +19,7 @@
 					<!-- 动态渲染三级分类的列表数据 -->
 					<view class="cate-level3-list">
 						<!-- level3-item -->
-						<view class="cate-level3-item" v-for="(item3, i3) in item2.children" :key="i3">
+						<view class="cate-level3-item" v-for="(item3, i3) in item2.children" :key="i3" @click="gotoGoodsList(item3)">
 							<!-- 图片 -->
 							<image :src="item3.cat_icon" mode=""></image>
 							<!-- 描述文字 -->
@@ -69,16 +69,24 @@
 				this.cateList2 = res.message[0].children;
 				console.log("res.message[0].children：", res.message[0].children)
 			},
-			
+			// 根据左侧视图区域点击 item 的 index 切换 class
 			changeLeftActive(index) {
 				this.leftActive = index;
 				
-				// 根据左侧点击的 index 来动态修改 cateList2 使获取的数据
+				// 根据左侧视图区域点击的 index 来动态修改 cateList2 使获取的数据
 				this.cateList2 = this.cateList[index].children;
 				// console.log(this.cateList2)
 				
 				// 每次点击左侧视图区域的item时，右侧区域视图返回顶部
 				this.scrollTop = this.scrollTop ? 0 : 1;
+			},
+			
+			// 点击三级分类跳转到商品列表页面
+			gotoGoodsList(data) {
+				// console.log(data);
+				uni.navigateTo({
+					url: "/subpackages/goods_list/goods_list?cid=" + data.cat_id
+				})
 			}
 		}
 	}
