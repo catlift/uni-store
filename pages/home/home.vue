@@ -33,14 +33,14 @@
 				<!-- floor-img-box -->
 				<view class="floor-img-box">
 					<!-- left-box -->
-					<view class="left-img-box">
+					<navigator class="left-img-box" :url="item.product_list[0].url">
 						<image :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}" mode="widthFix"></image>
-					</view>
+					</navigator>
 					<!-- right-boxs -->
 					<view class="right-img-box">
-						<view class="right-img-item" v-for="(item2, i2) in item.product_list" :key="i2" v-if="i2 !== 0">
+						<navigator class="right-img-item" v-for="(item2, i2) in item.product_list" :key="i2" v-if="i2 !== 0" :url="item2.url">
 							<image :src="item2.image_src" :style="{width: item2.image_width + 'rpx'}" mode="widthFix"></image>
-						</view>
+						</navigator>
 					</view>
 				</view>
 			</view>
@@ -114,6 +114,13 @@
 			async getFloorList() {
 				const { data: res } = await uni.$http.get("/api/public/v1/home/floordata");
 				if(res.meta.status !== 200) return uni.$showMsg();
+				
+				res.message.forEach(floor => {
+					floor.product_list.forEach(prod => {
+						// console.log(prod)
+						prod.url = "/subpackages/goods_list/goods_list?" + prod.navigator_url.split("?")[1];
+					})
+				})
 				
 				console.log("floor数据：", res)
 				this.floorList = res.message;
