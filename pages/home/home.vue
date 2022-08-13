@@ -1,5 +1,10 @@
 <template>
 	<view>
+		<!-- 搜索框 -->
+		<view class="search-box" :style="{top: sh + 'px'}">
+			<my-search @click="gotoSearch"></my-search>
+		</view>
+		
 		<!-- 渲染轮播图 -->
 		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
 			<!-- 循环渲染轮播图的item项 -->
@@ -59,7 +64,9 @@
 				// 存储分类导航数据
 				navList: [],
 				// 存储楼层数据（商品图片）
-				floorList: []
+				floorList: [],
+				// 搜索框距离顶部的位置
+				sh: 0
 			};
 		},
 		onLoad() {
@@ -71,6 +78,12 @@
 			
 			// 调用方法，获取floor数据
 			this.getFloorList();
+			
+			// 获取当前系统的信息
+			const sysInfo = uni.getSystemInfoSync();
+			// console.log(sysInfo);
+			// 搜索框距离顶部位置 = 顶部导航栏高度
+			this.sh = sysInfo.windowTop;
 		},
 		methods: {
 			// 建立请求，获取轮播图数据
@@ -124,6 +137,12 @@
 				
 				console.log("floor数据：", res)
 				this.floorList = res.message;
+			},
+			// 点击搜索框跳转到搜索页面
+			gotoSearch() {
+				uni.navigateTo({
+					url: "/subpackages/search/search"
+				})
 			}
 		}
 		
@@ -131,6 +150,13 @@
 </script>
 
 <style lang="scss">
+	.search-box {
+		// 黏性定位
+		position: sticky;
+		top: 0;
+		z-index: 999;
+	}
+	
 	swiper {
 		height: 330rpx;
 		

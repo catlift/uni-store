@@ -109,8 +109,9 @@
 		},
 		data() {
 			return {
-				show: false,
-				showSync: false,
+				// 自动获取焦点
+				show: true,
+				showSync: true,
 				searchVal: ''
 			}
 		},

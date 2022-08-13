@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<!-- 搜索框组件 -->
+		<my-search @click="gotoSearch"></my-search>
+		
+		<!-- 滚动区域 -->
 		<view class="scroll-view-container">
 			<!-- 左侧滚动视图区域 -->
 			<scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wh + 'px'}">
@@ -53,7 +57,8 @@
 			// 获取当前系统的信息
 			const sysInfo = uni.getSystemInfoSync();
 			// console.log(sysInfo);
-			this.wh = sysInfo.windowHeight;
+			// 窗口可用高度 = 屏幕高度 - tabBar高度（下面导航栏） - navigationBar高度(上面导航栏) - 搜索框高度
+			this.wh = sysInfo.windowHeight - 50;
 			
 			this.getCateList();
 		},
@@ -86,6 +91,13 @@
 				// console.log(data);
 				uni.navigateTo({
 					url: "/subpackages/goods_list/goods_list?cid=" + data.cat_id
+				})
+			},
+			
+			// 点击搜索框跳转到搜索页面
+			gotoSearch() {
+				uni.navigateTo({
+					url: "/subpackages/search/search"
 				})
 			}
 		}
