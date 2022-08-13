@@ -20,7 +20,7 @@
 			<!-- 标题 -->
 			<view class="histroy-title">
 				<text>搜索历史</text>
-				<uni-icons type="trash" size="17"></uni-icons>
+				<uni-icons type="trash" size="17" @click="clearHistroy"></uni-icons>
 			</view>
 			<!-- 搜索内容 -->
 			<view class="histroy-list">
@@ -48,7 +48,7 @@
 		},
 		onLoad() {
 			// 页面一加载就获取本地存储的搜索历史关键字
-			this.historyList = JSON.parse(uni.getStorageSync("skw") || '[]');
+			this.historyList = JSON.parse(uni.getStorageSync("skw") || "[]");
 		},
 		methods: {
 			input(e) {
@@ -102,6 +102,13 @@
 				this.historyList = Array.from(set)
 				// 本地存储，调用 uni.setStorageSync(key, value)
 				uni.setStorageSync("skw", JSON.stringify(this.historyList));
+			},
+			// 清空搜索历史
+			clearHistroy() {
+				// 清空 data 中保存的搜索历史
+				this.historyList = [];
+				// 清空本地存储的搜索历史
+				uni.setStorageSync("skw", "[]")
 			}
 		},
 		computed: {
