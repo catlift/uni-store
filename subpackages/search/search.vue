@@ -25,7 +25,7 @@
 			<!-- 搜索内容 -->
 			<view class="histroy-list">
 				<!-- <uni-tag v-for="(item, i) in historyList" :key="i" :text="item" :inverted="true"></uni-tag> -->
-				<uni-tag v-for="(item, i) in historys" :key="i" :text="item" :inverted="true"></uni-tag>
+				<uni-tag v-for="(item, i) in historys" :key="i" :text="item" :inverted="true" @click="gotoGoodsList(item)"></uni-tag>
 			</view>
 		</view>
 		
@@ -109,6 +109,11 @@
 				this.historyList = [];
 				// 清空本地存储的搜索历史
 				uni.setStorageSync("skw", "[]")
+			},
+			gotoGoodsList(kw) {
+				uni.navigateTo({
+					url: "/subpackages/goods_list/goods_list?query=" + kw
+				})
 			}
 		},
 		computed: {
