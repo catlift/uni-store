@@ -46,6 +46,10 @@
 				historyList: ["星", "a", "apple"]
 			};
 		},
+		onLoad() {
+			// 页面一加载就获取本地存储的搜索历史关键字
+			this.historyList = JSON.parse(uni.getStorageSync("skw") || '[]');
+		},
 		methods: {
 			input(e) {
 				clearTimeout(this.timer)
@@ -96,6 +100,8 @@
 				set.add(this.kw);
 				// 将 Set 对象转化为 Array 数组
 				this.historyList = Array.from(set)
+				// 本地存储，调用 uni.setStorageSync(key, value)
+				uni.setStorageSync("skw", JSON.stringify(this.historyList));
 			}
 		},
 		computed: {
