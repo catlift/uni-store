@@ -45,6 +45,10 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
+	import { mapMutations } from "vuex";
+	import { mapGetters } from "vuex";
+	
 	export default {
 		data() {
 			return {
@@ -118,9 +122,46 @@
 					})
 				}
 			},
+			// 把 m_cart 模块中的 addToCart 方法映射到当前页面使用
+			...mapMutations('m_cart', ['addToCart']),
 			// uni-goods-nav 右侧按钮点击事件
 			buttonClick(e) {
+				// 1. 判断是否点击了 加入购物车 按钮
+				if(e.content.text === '加入购物车') {
+					// 2. 创建一个 goods 对象，传递给 cate 的 Vuex
+					const goods = {
+						goods_id: this.goods_detail.goods_id, //商品id
+						goods_name: this.goods_detail.goods_name, // 商品名称
+						goods_price: this.goods_detail.goods_price, // 商品价格
+						goods_count: 1, // 商品数量
+						goods_small_logo: this.goods_detail.goods_small_logo, // 商品图片
+						goods_state: true // 商品勾选状态
+					}
+					
+					// 3. 通过 this 调用映射过来的 addToCart 方法，把商品信息对象存储到购物车中
+					this.addToCart(goods);
+					// console.log(this.cart)
+				}
+			},
+		},
+		// 计算
+		computed: {
+			// 调用 mapState 方法，把 m_cart 模块中的 cart 数组映射到当前页面中，作为计算属性来使用
+			// ...mapState('模块名称', ['要映射的数据名称1', '要映射的数据名称2'])
+			...mapState('m_cart', ['cart']),
+			...mapGetters('m_cart', ['total'])
+		},
+		// 监听
+		watch: {
+			// 1. 监听 total 的值变化, total(newVal, oldVal)
+			total(newVal) {
+				// 2. 通过数组的 find() 方法，找到购物车按钮的配置对象
+				const findResult = tis.options.find((x) => x.text === "购物车");
 				
+				if(findResult) {
+					// 3. 动态为购物车按钮的 info 属性赋值
+					findResult.info = newVal;
+				}
 			}
 		}
 	}
