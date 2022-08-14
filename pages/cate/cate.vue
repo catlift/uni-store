@@ -38,7 +38,12 @@
 </template>
 
 <script>
+	// 导入封装的 mixin 模块
+	import badgeMixin from "@/mixins/tabbar-badge.js"
+	
 	export default {
+		// 将 badgeMixin 混入到当前页面进行使用
+		mixins: [badgeMixin],
 		data() {
 			return {
 				// 窗口可用高度 = 屏幕高度 - tabBar高度（下面导航栏） - navigationBar高度(上面导航栏)

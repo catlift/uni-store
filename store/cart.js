@@ -8,7 +8,7 @@ export default {
 		// 购物车数组，用来存储购物车中每个商品的信息对象
 		// 每个商品的信息对象，有：
 		// { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
-		cart: []
+		cart: JSON.parse(uni.getStorageSync('cart') || '[]')
 	}),
 	
 	// 模块的 mutations 方法
@@ -25,6 +25,13 @@ export default {
 				// 如果购物车中有这件商品，则只更新数量即可
 				findResult.goods_count++;
 			}
+			
+			// 通过 commit 方法，调用 m_cart 命名空间下的 saveToStorage 方法
+			this.commit("m_cart/saveToStorage");
+		},
+		// 将购物车的数据保存到本地
+		saveToStorage(state) {
+			uni.setStorageSync('cart', JSON.stringify(state.cart));
 		}
 	},
 	
@@ -36,6 +43,8 @@ export default {
 			
 			// 循环统计商品的数量，并统计到 count 中
 			state.cart.forEach(goods => count += goods.goods_count);
+			// 记得返回值
+			return count;
 		}
 	}
 }
