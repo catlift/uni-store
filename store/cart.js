@@ -47,6 +47,29 @@ export default {
 				// 通过 commit 方法，调用 m_cart 命名空间下的 saveToStorage 方法
 				this.commit("m_cart/saveToStorage");
 			}
+		},
+		// 修改购物车中的商品数量
+		updateGoodsCount(state, goods) {
+			// 根据商品id 查找 cart 里面的对应商品信息
+			const findResult = state.cart.find(x => x.goods_id === goods.goods_id);
+			
+			// 存在对应的商品
+			if(findResult) {
+				// 更新对应商品的勾选状态
+				findResult.goods_count = goods.goods_count;
+				// 存储到本地
+				// 通过 commit 方法，调用 m_cart 命名空间下的 saveToStorage 方法
+				this.commit("m_cart/saveToStorage");
+			}
+		},
+		// 删除商品
+		removeGoodsById(state, goods_id) {
+			// 调用数组的 filter 方法进行过滤
+			state.cart = state.cart.filter(x => x.goods_id !== goods_id);
+			
+			// 存储到本地
+			// 通过 commit 方法，调用 m_cart 命名空间下的 saveToStorage 方法
+			this.commit("m_cart/saveToStorage");
 		}
 	},
 	

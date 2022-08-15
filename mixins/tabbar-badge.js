@@ -18,5 +18,14 @@ export default {
 			})
 			// console.log(this.total)
 		}
+	},
+	// 监听
+	watch: {
+		// handler 属性用来定义侦听器的 function 处理函数
+		// 1. 监听 total 的值变化, total(newVal, oldVal)
+		total(newVal) {
+			// 设置 badge
+			this.setBadge()
+		}
 	}
 }

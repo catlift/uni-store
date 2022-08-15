@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<!-- goods 是从父组件传过来的数据，在 props 接受了 -->
+		<!-- goods 是从父组件传过来的数据，在 props 接收了 -->
 		<view class="goods-item">
 			<!-- 商品左侧的信息（图片） -->
 			<view class="left-goods-item">
@@ -19,6 +19,8 @@
 						<!-- goods.goods_price | 过滤器 -->
 						￥{{goods.goods_price | toFixed}}
 					</view>
+					<!-- 商品数量 -->
+					<uni-number-box :min="1" :value="goods.goods_count" @change="numChangeHandler" v-show="showNum"></uni-number-box>
 				</view>
 			</view>
 		</view>
@@ -46,6 +48,11 @@
 				type: Boolean,
 				// 如果外界没有指定 show-radio 属性的值，则默认不展示 radio 组件
 				default: false
+			},
+			// 是否展示价格右侧的 NumberBox 组件
+			showNum: {
+				type: Boolean,
+				default: false
 			}
 		},
 		// 过滤器
@@ -64,6 +71,16 @@
 					// 商品最新勾选状态
 					goods_state: !this.goods.goods_state
 				})
+			},
+			// uni-number-box 组件的 change 事件处理函数
+			numChangeHandler(val) {
+				// 通过 this.$emit() 触发外界通过 @ 绑定的 num-change 事件
+				this.$emit('num-change', {
+					// 商品id
+					goods_id: this.goods.goods_id,
+					// 最新数量
+					goods_count: +val
+				})
 			}
 		}
 	}
@@ -74,6 +91,10 @@
 		display: flex;
 		padding: 10px 5px;
 		border-bottom: 1px solid #f0f0f0;
+		// 让 goods-item 占满整个屏幕
+		width: 750rpx;
+		// 设置盒模型为 border-box
+		box-sizing: border-box;
 		
 		.left-goods-item {
 			display: flex;
@@ -90,6 +111,7 @@
 		
 		.right-goods-item {
 			display: flex;
+			flex: 1;
 			flex-direction: column;
 			justify-content: space-between;
 			
@@ -98,6 +120,10 @@
 			}
 			
 			.goods-info-box {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				
 				.goods-price {
 					font-size: 16px;
 					color: #D81E06;
