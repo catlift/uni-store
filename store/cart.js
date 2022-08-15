@@ -13,6 +13,7 @@ export default {
 	
 	// 模块的 mutations 方法
 	mutations: {
+		// 添加到购物车
 		addToCart(state, goods) {
 			// 根据提交的商品的 id ,查询购物车中是否存在这件商品
 			// 如果不存在，则 findResult 为 undefind; 否则，为查找到的商品信息对象
@@ -32,6 +33,20 @@ export default {
 		// 将购物车的数据保存到本地
 		saveToStorage(state) {
 			uni.setStorageSync('cart', JSON.stringify(state.cart));
+		},
+		// 商品勾选状态更改
+		updateGoodsState(state, goods) {
+			// 根据商品id 查找 cart 里面的对应商品信息
+			const findResult = state.cart.find(x => x.goods_id === goods.goods_id);
+			
+			// 存在对应的商品
+			if(findResult) {
+				// 更新对应商品的勾选状态
+				findResult.goods_state = goods.goods_state;
+				// 存储到本地
+				// 通过 commit 方法，调用 m_cart 命名空间下的 saveToStorage 方法
+				this.commit("m_cart/saveToStorage");
+			}
 		}
 	},
 	

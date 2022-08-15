@@ -25,7 +25,7 @@
 	// 导入封装的 mixin 模块
 	import badgeMixin from "@/mixins/tabbar-badge.js"
 	// 导入 cart 的 store
-	import { mapState } from "vuex"
+	import { mapState, mapMutations } from "vuex"
 	
 	export default {
 		// 将 badgeMixin 混入到当前页面进行使用
@@ -44,8 +44,12 @@
 		},
 		methods: {
 			radioChangeHandler(e) {
-				console.log(e)
-			}
+				// 输出得到的数据 -> {goods_id: Number, goods_state: boolean}
+				// console.log(e)
+				this.updateGoodsState(e);
+			},
+			// 将 m_cart 模块中的 Mutations函数里面的 updateGoodsState() 方法映射到当前页面
+			...mapMutations('m_cart', ['updateGoodsState'])
 		}
 	}
 </script>
