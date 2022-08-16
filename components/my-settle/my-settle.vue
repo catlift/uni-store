@@ -12,12 +12,12 @@
 		</view>
 		
 		<!-- 结算按钮 -->
-		<view class="btn-settle">结算({{checkedCount}})</view>
+		<view class="btn-settle" @click="settlement">结算({{checkedCount}})</view>
 	</view>
 </template>
 
 <script>
-	import { mapGetters, mapMutations } from "vuex"
+	import { mapGetters, mapMutations, mapState } from "vuex"
 	
 	export default {
 		name:"my-settle",
@@ -31,7 +31,11 @@
 			// 是否全选
 			isFullCheck() {
 				return this.total === this.checkedCount
-			}
+			},
+			// addstr 是详细的收货地址
+			...mapGetters('m_user', ['addstr']),
+			// token 是用户登录成功之后的 token 字符串
+			...mapState('m_user', ['token'])
 		},
 		methods: {
 			// 使用 mapMutations 辅助函数，把 m_cart 模块提供的 updateAllGoodsState 方法映射到当前组件中使用
@@ -41,6 +45,17 @@
 				// 修改购物车中所有商品的选中状态
 				// !this.isFullCheck 表示：当前全选按钮的状态取反之后，就是最新的勾选状态
 				this.updateAllGoodsState(!this.isFullCheck)
+			},
+			// 点击了结算按钮
+			settlement() {
+				// s1. 先判断是否勾选了要结算的商品
+				if(!this.checkedCount) return uni.$showMsg('请选择要购买的商品！');
+				
+				// s2. 再判断用户是否选择了收货地址
+				if(!this.addstr) return uni.$showMsg("请选择收货地址！");
+				
+				// s3. 最后判断用户是否登录
+				if(!this.token) return uni.$showMsg("请先登录！")
 			}
 		}
 	}
