@@ -1,7 +1,6 @@
 <template>
 	<view>
-		my
-		<my-address></my-address>
+
 	</view>
 </template>
 
@@ -23,6 +22,6 @@
 	}
 </script>
 
-<style>
-
+<style lang="scss">
+	
 </style>
