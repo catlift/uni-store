@@ -1,6 +1,7 @@
 <template>
 	<view>
 		my
+		<my-address></my-address>
 	</view>
 </template>
 
