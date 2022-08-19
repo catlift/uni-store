@@ -1,5 +1,8 @@
 <template>
 	<view v-if="cart.length !== 0">
+		<!-- 收货地址 组件 -->
+		<my-address></my-address>
+		
 		<!-- 购物车商品列表的标题区域 -->
 		<view class="cart-title">
 			<!-- 左侧图标 -->

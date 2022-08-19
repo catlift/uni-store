@@ -13,7 +13,7 @@ export default {
 	
 	// 模块的 mutations 方法
 	mutations: {
-		// 添加到购物车
+		// 添加到购物车, goods --> Object
 		addToCart(state, goods) {
 			// 根据提交的商品的 id ,查询购物车中是否存在这件商品
 			// 如果不存在，则 findResult 为 undefind; 否则，为查找到的商品信息对象

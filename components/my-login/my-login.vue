@@ -10,8 +10,8 @@
 </template>
 
 <script>
-	// 导入 user 的 vuex 模块
-	import { mapMutations } from "vuex"
+	// 导入 user 的 vuex 模块, 3.1
+	import { mapMutations, mapState } from "vuex"
 	
 	export default {
 		name:"my-login",
@@ -34,8 +34,8 @@
 				// 获取登录成功后的 Token 字符串
 				this.getToken(e.detail);
 			},
-			// 1.1,2.1 调用 mapMutations 辅助方法，把 m_user 模块中的 updateUserInfo 映射到当前组件中使用
-			...mapMutations('m_user', ['updateUserInfo', 'updateToken']),
+			// 1.1, 2.1, 3.3 调用 mapMutations 辅助方法，把 m_user 模块中的 updateUserInfo 映射到当前组件中使用
+			...mapMutations('m_user', ['updateUserInfo', 'updateToken', 'updateRedirectInfo']),
 			async getToken(info) {
 				// g1. 调用微信登录接口
 				const [err, res] = await uni.login().catch(err => err);
@@ -58,7 +58,26 @@
 				// uni.$showMsg('登录成功')
 				// 2.2 更新 vuex 中的 token
 				this.updateToken(loginResult.message.token)
+			},
+			// 返回登录之前的页面
+			navigatorBack() {
+				// 如果 redirectInfo 不为空，并且导航方式是 switchTab
+				if(this.redirectInfo && this.redirectInfo.openType === "switchTab") {
+					// 调用小程序提供的 uni.switchTab 方法，返回之前页面
+					uni.switchTab({
+						// 要导航到的页面地址
+						url: this.redirectInfo.from,
+						// 导航成功之后，把 vuex 中的 redirectInfo 对象重置为 null
+						complete: () => {
+							this.updateRedirectInfo(null)
+						}
+					})
+				}
 			}
+		},
+		computed: {
+			// 3.2 调用 mapState 辅助方法，把 m_user 模块中的 redirectInfo 数据映射到当前用组件中使用
+			...mapState('m_user', ['redirectInfo']),
 		}
 	}
 </script>
