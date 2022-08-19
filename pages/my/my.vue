@@ -2,11 +2,10 @@
 	<view class="my-container">
 	
 		<!-- 用户未登录时 -->
-		<!-- <my-login v-if="!token"></my-login> -->
+		<my-login v-if="!token"></my-login>
 		
 		<!-- 用户登录后 -->
-		<!-- <my-userinfo v-else></my-userinfo> -->
-		<my-userinfo></my-userinfo>
+		<my-userinfo v-else></my-userinfo>
 	</view>
 </template>
 

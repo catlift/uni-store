@@ -85,7 +85,7 @@
 				this.showTips(this.seconds);
 				
 				// 创建定时器，每隔 1 秒刷新 showtips 的展示消息
-				this.timer = setInterval(function() {
+				this.timer = setInterval(() => {
 					this.seconds -= 1;
 					
 					// tt1. 判断倒计时秒数
@@ -95,7 +95,7 @@
 						
 						// tt3. 跳转页面
 						uni.switchTab({
-							url: "//pages/my/my",
+							url: "/pages/my/my",
 							// 页面跳转成功后的回调函数
 							success: () => {
 								// 调用 user.js 的 vuex 里面 updateRedirectInfo 方法，存储信息到 Store 中
