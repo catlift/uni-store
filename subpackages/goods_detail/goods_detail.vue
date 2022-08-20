@@ -1,3 +1,4 @@
+<!-- 商品详情 -->
 <template>
 	<view v-if="goods_detail.goods_name" class="goods-detail-container">
 		<!-- 商品的轮播图 -->
