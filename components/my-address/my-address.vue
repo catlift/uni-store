@@ -36,14 +36,20 @@
 			return {
 				// 1.1 取消声明，使用映射进来的 address
 				// 存储收货地址信息
-				// address: {}
+				// address: {},
+				// 倒计时
+				seconds: 3,
+				// 定时器的 Id
+				timer: null
 			};
 		},
 		onLoad() {
-			console.log(this.address)
+			// console.log(this.address)
 		},
 		methods: {
 			async chooseAddress() {
+				// 如果没有登录，提示登录
+				if(!this.token) return this.delayNavigate()
 				// c1. 调用小程序提供的 chooseAddress() 方法，即可使用选择收货地址的功能
 				//    返回值是一个数组：第 1 项为错误对象；第 2 项为成功之后的收货地址对象
 				const [err, succ] = await uni.chooseAddress().catch(err => err)
@@ -94,11 +100,64 @@
 				    }
 				})
 				
-			}
+			},
+			// 展示倒计时的提示消息
+			showTips(n) {
+			  // 调用 uni.showToast() 方法，展示提示消息
+			  uni.showToast({
+			    // 不展示任何图标
+			    icon: 'none',
+			    // 提示的消息
+			    title: '请登录后再选择收货地址！' + n + ' 秒后自动跳转到登录页',
+			    // 为页面添加透明遮罩，防止点击穿透
+			    mask: true,
+			    // 1.5 秒后自动消失
+			    duration: 1500
+			  })
+			},
+			// 延迟导航到 my 页面
+			delayNavigate() {
+				// 每次调用 this.seconds 重置一下，避免 第 2、3...n 次执行时 this.seconds 的秒数是 0
+				this.seconds = 3;
+				// 延迟展示消息
+				this.showTips(this.seconds);
+				
+				// 创建定时器，每隔 1 秒刷新 showtips 的展示消息
+				this.timer = setInterval(() => {
+					this.seconds -= 1;
+					
+					// tt1. 判断倒计时秒数
+					if(this.seconds <= 0) {
+						// tt2. 清除定时器
+						clearInterval(this.timer);
+						
+						// tt3. 跳转页面
+						uni.switchTab({
+							url: "/pages/my/my",
+							// 页面跳转成功后的回调函数
+							success: () => {
+								// 调用 user.js 的 vuex 里面 updateRedirectInfo 方法，存储信息到 Store 中
+								this.updateRedirectInfo({
+									// 跳转方式
+									openType: 'switchTab',
+									// 从哪个页面跳转过去的
+									from: "/pages/cart/cart"
+								})
+							}
+						})
+						// tt4. 阻止后面的 showTips 方法执行
+						return;
+					}
+					
+					this.showTips(this.seconds);
+				}, 1000);
+			},
+			// 把 m_user 模块中的 updateRedirectInfo 方法映射到当前页面中使用
+			...mapMutations('m_user', ['updateRedirectInfo'])
 		},
 		computed: {
 			// 1.2 把 m_user 模块中的 address 对象映射当前组件中使用，代替 data 中 address 对象
-			...mapState('m_user', ['address']),
+			...mapState('m_user', ['address', 'token']),
 			// 收货详细地址的计算属性，该方法常用，抽离到 user.js 的 getters 节点，并映射到 computed 这里
 			// addstr() {}
 			...mapGetters('m_user', ['addstr'])

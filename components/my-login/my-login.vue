@@ -27,7 +27,7 @@
 				if (e.detail.errMsg === 'getUserInfo:fail auth deny') return uni.$showMsg('您取消了登录授权！')
 				
 				// 获取用户信息成功， e.detail.userInfo 就是用户的基本信息
-				// console.log(e.detail.userInfo)
+				// console.log(e.detail)
 				// 1.2 存储到本地
 				this.updateUserInfo(e.detail.userInfo);
 				
@@ -39,7 +39,7 @@
 			async getToken(info) {
 				// g1. 调用微信登录接口
 				const [err, res] = await uni.login().catch(err => err);
-				
+				// console.log(res, err)
 				// g2. 判断是否 uni.login() 调用失败
 				if (err || res.errMsg !== 'login:ok') return uni.$showError('登录失败！');
 				
@@ -52,12 +52,14 @@
 				    signature: info.signature
 				}
 				
-				// g4. 换取 token
-				const { data: loginResult } = await uni.$http.post('/api/public/v1/users/wxlogin', query)
-				if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！')
+				// g4. 换取 token; ...... 接口的登录报 404 了，这里使用常量代替
+				// const { data: loginResult } = await uni.$http.post('/api/public/v1/users/wxlogin', query)
+				// console.log(loginResult)
+				// if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！')
 				// uni.$showMsg('登录成功')
+				const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIzLCJpYXQiOjE1NjQ3MzAwNzksImV4cCI6MTAwMTU2NDczMDA3OH0.YPt-XeLnjV-_1ITaXGY2FhxmCe4NvXuRnRB8OMCfnPo'
 				// 2.2 更新 vuex 中的 token
-				this.updateToken(loginResult.message.token)
+				this.updateToken(token)
 			},
 			// 返回登录之前的页面
 			navigatorBack() {

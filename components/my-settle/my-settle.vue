@@ -31,6 +31,7 @@
 		},
 		computed: {
 			...mapGetters('m_cart', ['checkedCount', 'total', 'checkedGoodsAmount']),
+			...mapState('m_cart', ['cart']),
 			// 是否全选
 			isFullCheck() {
 				return this.total === this.checkedCount
@@ -119,6 +120,7 @@
 			// 支付订单
 			async payOrder() {
 				// p1 创建订单 
+				// console.log(this.cart.filter(x => x.goods_state))
 				// p1.1 组织订单的信息对象
 				const orderInfo = {
 					// 订单总价格
@@ -131,6 +133,7 @@
 				
 				// p1.2 发起请求创建订单
 				const { date: res } = await uni.$http.post("/api/public/v1/my/orders/create", orderInfo);
+				// console.log(res)
 				if(res.meta.status !== 200) return uni.$showMsg("创建订单失败！");
 				
 				// p1.3 得到服务器响应的 "订单编号"

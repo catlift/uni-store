@@ -101,10 +101,12 @@
 					content: "确认退出当前登录状态？"
 				}).catch(err => err)
 				// 确认退出登录状态，清空 user.js 的 vuex 存储的 userinfo(用户基本信息)、token(用户成功登录的字符串)、address(收货地址)
-				if(succ && succ.comfirm) {
+				console.log(succ)
+				if(succ && succ.confirm) {
 					this.updateAddress({});
 					this.updateUserInfo({});
 					this.updateToken('');
+					// console.log('hello')
 				}
 			},
 			...mapMutations('m_user', ['updateAddress', 'updateUserInfo', 'updateToken']),

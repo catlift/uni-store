@@ -71,13 +71,13 @@
 			// 发送请求，获取cate数据
 			async getCateList() {
 				const { data: res } = await uni.$http.get("/api/public/v1/categories");
-				console.log("cate 数据：", res);
+				// console.log("cate 数据：", res);
 				if(res.meta.status !== 200) return uni.$showMsg();
 				
 				this.cateList = res.message;
 				
 				this.cateList2 = res.message[0].children;
-				console.log("res.message[0].children：", res.message[0].children)
+				// console.log("res.message[0].children：", res.message[0].children)
 			},
 			// 根据左侧视图区域点击 item 的 index 切换 class
 			changeLeftActive(index) {

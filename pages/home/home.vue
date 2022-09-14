@@ -109,7 +109,7 @@
 				}
 				
 				// 请求成功，为 data 中的 swiperList 赋值
-				console.log("轮播图 图片数据：", res);
+				// console.log("轮播图 图片数据：", res);
 				this.swiperList = res.message;
 			},
 			// 建立请求，获取导航数据
@@ -117,7 +117,7 @@
 				const { data: res } = await uni.$http.get("/api/public/v1/home/catitems")
 				if(res.meta.status !== 200) return uni.$showMsg();
 				
-				console.log("nav数据：", res);
+				// console.log("nav数据：", res);
 				this.navList = res.message;
 			},
 			// 监听事件,点击第一个图标跳转到 cate 页面
@@ -140,7 +140,7 @@
 					})
 				})
 				
-				console.log("floor数据：", res)
+				// console.log("floor数据：", res)
 				this.floorList = res.message;
 			},
 			// 点击搜索框跳转到搜索页面

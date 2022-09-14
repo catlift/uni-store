@@ -43,6 +43,7 @@ export default {
 		},
 		// 2.1 将 userinfo 持久化存储到本地
 		saveUserInfoToStorage(state) {
+			// console.log("hello", state.userinfo)
 			uni.setStorageSync('userinfo', JSON.stringify(state.userinfo));
 		},
 		// 更新 token 字符串, token --> String
